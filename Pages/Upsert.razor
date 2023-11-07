@@ -10,7 +10,7 @@
 <h3>Upsert Engineer</h3>
 <EditForm Model="@engineer">
     <div class="form-group row p-2">
-        <input type="hidden" @bind-value="engineer.id"/>
+        <input type="hidden" @bind-value="engineer.id" />
         <div class="col-md-6">
             <input type="text" class="form-control" placeholder="Name" @bind-value="engineer.Name" />
         </div>
@@ -18,32 +18,35 @@
             <input type="text" class="form-control" placeholder="Country" @bind-value="engineer.Country" />
         </div>
     </div>
-
     <div class="form-group row p-2">
         <div class="col-md-6">
-            <input type="text" class="form-control" placeholder="City" @bind-value="engineer.City" />
+            <input type="text" class="form-control" placeholder="Specialty" @bind-value="engineer.Specialty" />
         </div>
     </div>
     <div class="form-group row p-2">
         <div class="text-center">
-            <button class="btn btn-primary" @onclick="@async () => await SaveEngineer())" >Save</button>
+            <button class="btn btn-primary" @onclick="@(async () => await SaveEngineer())">Save</button>
         </div>
     </div>
 </EditForm>
+
 @code {
     Engineer engineer = new();
 
     [Parameter]
-    public string id { get; set; }
-    
-    protected override async Task OnParametersSetAsync()
+    public string? id { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        engineer = await engineerService.GetEngineerDetails(id, id);
+        if (!string.IsNullOrEmpty(id))
+        {
+            engineer = await engineerService.GetEngineerDetailsById(id, id);
+        }
     }
 
-    private async Task SaveEngineer(){
+    private async Task SaveEngineer()
+    {
         await engineerService.UpsertEngineer(engineer);
         NavManager.NavigateTo("/");
     }
-
 }

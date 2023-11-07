@@ -1,4 +1,6 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿// Ignore Spelling: Upsert
+
+using Microsoft.Azure.Cosmos;
 using System.ComponentModel;
 using static System.Net.WebRequestMethods;
 using Container = Microsoft.Azure.Cosmos.Container;
@@ -33,7 +35,7 @@ namespace Blazor.Azure.CosmosDB.Demo.Data
             }
             catch (Exception ex)
             {
-                throw new Exception("AddEngineer", ex);
+                throw new Exception("UpsertEngineer", ex);
             }
         }
 
