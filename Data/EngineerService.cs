@@ -9,7 +9,7 @@ namespace Blazor.Azure.CosmosDB.Demo.Data
 {
     public class EngineerService : IEngineerService
     {
-        private readonly string CosmosDbConnectionString = "AccountEndpoint=https://azure-dev-vvv-cosmos-db.documents.azure.com:443/;AccountKey=YLfiOx57pZMim9nxj7UvfAZEPLX8wJEjNFAggXOh86FWiW7yEgedfBQ5TETmeFKzAMovL2o4hOOxACDbB9O7XA==;";
+        private readonly string CosmosDbConnectionString = "";
         private readonly string CosmosDbName = "Contractors";
         private readonly string CosmosDbContainerName = "Engineers";
         public EngineerService() { }
