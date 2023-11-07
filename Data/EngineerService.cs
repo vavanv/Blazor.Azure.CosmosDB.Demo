@@ -30,7 +30,7 @@ namespace Blazor.Azure.CosmosDB.Demo.Data
             }
             catch (Exception ex)
             {
-                ex.Message.ToString().Trim();
+                throw new Exception("AddEngineer", ex);
             }
         }
 
@@ -44,6 +44,47 @@ namespace Blazor.Azure.CosmosDB.Demo.Data
             catch (Exception ex)
             {
                 throw new Exception("Delete", ex);
+            }
+        }
+
+
+        public async Task <List<Engineer>> GetEngineerDetails()
+        {
+            List<Engineer> engineers = new List<Engineer>();
+            try
+            {
+                var container = GetContainerClient();
+                var sqlQuery ="SELECT * FROM c";
+                QueryDefinition queryDefinition = new QueryDefinition(sqlQuery);
+                FeedIterator<Engineer> queryResultSetIterator = container.GetItemQueryIterator<Engineer>(queryDefinition);
+
+                while(queryResultSetIterator.HasMoreResults)
+                {
+                    FeedResponse<Engineer> currentResultSet = await queryResultSetIterator.ReadNextAsync();
+                    foreach (Engineer engineer in currentResultSet)
+                    {
+                        engineers.Add(engineer);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("GetEngineerDetails", ex);
+            }
+            return engineers;
+        }
+
+        public  async Task<Engineer> GetEngineerDetailsById(string? id, string? partitionKey)
+        {
+            try
+            {
+                var container = GetContainerClient();
+                var response = await container.ReadItemAsync<Engineer>(id, new PartitionKey(partitionKey));
+                return response.Resource;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("GetEngineerDetailsById", ex);
             }
         }
     }
